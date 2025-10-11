@@ -1,0 +1,65 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@font-face {
+  font-family: 'Inter Variable';
+  src: url('/fonts/InterVariable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@theme inline {
+  --font-sans: 'Inter Variable', sans-serif;
+  --font-mono: var(--font-ibm-plex-mono), monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+:root {
+  --background: oklch(0.9676 0.016 286.1);
+  --foreground: oklch(0.176 0.0123 285.06);
+  --border: oklch(0.7235 0.0071 286.22);
+}
+
+.dark {
+  --background: oklch(0.176 0.0123 285.06);
+  --foreground: oklch(1 0 0);
+  --border: oklch(0.4686 0.0048 286.21);
+}
+
+@layer base {
+  [data-theme='dark'] {
+    color-scheme: dark;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  button,
+  [role='button'] {
+    cursor: pointer;
+  }
+
+  body {
+    @apply text-foreground bg-background h-full w-full;
+  }
+
+  * {
+    border-color: var(--border);
+    outline-color: var(--ring) 50%;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  main {
+    display: block;
+  }
+}

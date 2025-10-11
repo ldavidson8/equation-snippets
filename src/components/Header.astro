@@ -1,0 +1,19 @@
+---
+import { Icon } from 'astro-icon/components'
+import ThemeToggle from './ThemeToggle.astro'
+---
+
+<header class="absolute top-4 right-0 left-0 mx-auto w-[calc(100%-(20px*2))] md:top-5">
+  <a href="/" class="mt-3 ml-3 block w-10">
+    <Icon name="tabler:sum" class="size-8" />
+    <span class="sr-only">Home</span>
+  </a>
+
+  <!-- <nav
+    class="bg-background fixed top-10 right-0 left-0 z-[999] mx-auto h-12 w-fit rounded-md border"
+  
+  </nav> -->
+  <div class="fixed top-10 right-10 flex items-center">
+    <ThemeToggle />
+  </div>
+</header>

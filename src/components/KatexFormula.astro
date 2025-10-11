@@ -1,0 +1,32 @@
+---
+interface Props {
+  latex: string
+  displayMode?: boolean
+  className?: string
+}
+
+const { latex, displayMode = true, className = '' } = Astro.props
+
+import katex from 'katex'
+import 'katex/dist/katex.min.css'
+
+let rendered = ''
+
+try {
+  if (latex) {
+    rendered = katex.renderToString(latex, {
+      displayMode: true,
+      throwOnError: false,
+      strict: false,
+      output: 'html',
+    })
+  }
+} catch (error) {
+  console.error('KaTeX SSR error:', error)
+  const escapeHtml = (s: string) =>
+    s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  rendered = `<pre>${escapeHtml(latex)}</pre>`
+}
+---
+
+<div class={`${className}`} set:html={rendered} />

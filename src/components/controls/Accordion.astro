@@ -1,0 +1,16 @@
+---
+import { Icon } from 'astro-icon/components'
+
+const { title } = Astro.props
+---
+
+<details class="group">
+  <summary class="relative flex list-none items-center justify-between py-2">
+    {title}
+    <Icon
+      name="tabler:chevron-down"
+      class="size-4 transition-transform duration-150 will-change-transform group-open:rotate-180"
+    />
+  </summary>
+  <slot />
+</details>

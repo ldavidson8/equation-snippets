@@ -1,0 +1,43 @@
+---
+import Footer from '@/components/Footer.astro'
+import Head from '@/components/Head.astro'
+import Header from '@/components/Header.astro'
+import 'katex/dist/katex.min.css'
+
+type Props = {
+  className?: string
+  title: string
+  siteName?: string
+  description: string
+  cover: string
+  author?: string
+}
+
+const { className, title, siteName, description, cover, author } = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <Head
+      title={title}
+      siteName={siteName}
+      description={description}
+      cover={cover}
+      author={author}
+    />
+  </head>
+  <body>
+    <div>
+      <Header />
+      <main>
+        <div class="p-4 md:p-5">
+          <div class="rounded-md border md:rounded-lg">
+            <slot />
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>

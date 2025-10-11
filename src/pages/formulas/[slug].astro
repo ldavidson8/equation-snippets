@@ -1,0 +1,67 @@
+---
+import { getCollection } from 'astro:content'
+import Layout from '@/layouts/Layout.astro'
+import MathDisplay from '@/components/MathDisplay.astro'
+import CodeBlock from '@/components/CodeBlock.astro'
+
+export async function getStaticPaths() {
+  const formulas = await getCollection('formulas')
+  return formulas.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }))
+}
+
+const { entry } = Astro.props
+const { Content } = await entry.render()
+---
+
+<Layout title={entry.data.title} description={entry.data.description} cover="">
+  <article class="prose prose-lg container mx-auto max-w-none px-4 py-8">
+    <h1 class="mb-4 text-4xl font-bold">{entry.data.title}</h1>
+    <p class="mb-6 text-xl text-gray-600">{entry.data.description}</p>
+    <div class="metadata mb-6 flex flex-wrap items-center gap-2">
+      <span
+        class="category inline-block rounded bg-blue-100 px-2.5 py-0.5 text-sm font-medium text-blue-800"
+        >{entry.data.category}</span
+      >
+      <div class="tags">
+        {
+          entry.data.tags.map((tag) => (
+            <span class="tag mr-2 inline-block rounded bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
+              #{tag}
+            </span>
+          ))
+        }
+      </div>
+    </div>
+
+    {/* Render the MDX content */}
+    <div class="prose prose-lg max-w-none">
+      <Content components={{ MathDisplay, CodeBlock }} />
+    </div>
+
+    {
+      entry.data.relatedFormulas && entry.data.relatedFormulas.length > 0 && (
+        <div class="related-formulas mt-12 border-t pt-6">
+          <h2 class="mb-4 text-2xl font-semibold">Related Formulas</h2>
+          <ul class="list-none pl-0">
+            {entry.data.relatedFormulas.map((slug) => (
+              <li class="mb-2">
+                <a
+                  href={`/formulas/${slug}/`}
+                  class="text-blue-600 hover:underline"
+                >
+                  {slug
+                    .split('-')
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(' ')}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+  </article>
+</Layout>

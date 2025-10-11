@@ -1,0 +1,35 @@
+---
+import { Icon } from 'astro-icon/components'
+import type { HTMLAttributes } from 'astro/types'
+
+interface Props extends HTMLAttributes<'select'> {
+  id?: string
+  name: string
+  label?: string
+  values: {
+    value: string
+    label: string
+    selected?: boolean
+    disabled?: boolean
+  }[]
+  hidden?: boolean
+  class?: string
+}
+
+const { id, name, label, values, hidden, class: className, ...attrs } = Astro.props
+---
+
+<div class:list={['relative space-y-2.5', hidden && 'hidden', className]} data-field={id}>
+  <label class="text-foreground block" for={id}>{label}</label>
+  <div class="relative">
+    <select id={id} name={name}>
+      {
+        values.map(({ value, label, selected, disabled }) => (
+          <option value={value} selected={selected} disabled={disabled}>
+            {label}
+          </option>
+        ))
+      }
+    </select>
+  </div>
+</div>

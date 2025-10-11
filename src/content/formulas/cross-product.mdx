@@ -1,0 +1,38 @@
+---
+title: 'Cross Product (Vectors)'
+description: 'Calculates a vector perpendicular to two input vectors in 3D space.'
+category: 'Vector Operations'
+tags: ['vector', 'geometry', '3d', 'linear algebra']
+latex: '\\mathbf{a} \\times \\mathbf{b} = \\begin{bmatrix} a_2b_3 - a_3b_2 \\\\ a_3b_1 - a_1b_3 \\\\ a_1b_2 - a_2b_1 \\end{bmatrix}'
+difficulty: 'intermediate'
+relatedFormulas: ['dot-product', 'vector-normalization']
+---
+
+import MathDisplay from '@/components/MathDisplay.astro'
+
+## Definition
+
+The cross product is a binary operation on two vectors in three-dimensional space that results in a vector perpendicular to both of the original vectors.
+
+## Formula
+
+For two vectors **a** = [a₁, a₂, a₃] and **b** = [b₁, b₂, b₃]:
+
+<MathDisplay latex={frontmatter.latex} />
+
+Geometrically, the magnitude of the cross product equals the area of the parallelogram formed by the two vectors:
+
+<MathDisplay
+  latex={
+    '\\|\\mathbf{a} \\times \\mathbf{b}\\| = \\|\\mathbf{a}\\| \\|\\mathbf{b}\\| \\sin \\theta'
+  }
+/>
+
+where θ is the angle between the vectors **a** and **b**.
+
+## Use Cases in Graphics & Games
+
+- Calculating surface normals for lighting calculations
+- Determining if a point is to the left or right of a line
+- Computing torque in physics simulations
+- Creating orthogonal bases for coordinate transformations

@@ -1,0 +1,48 @@
+---
+import { Icon } from 'astro-icon/components'
+---
+
+<div class="relative w-full">
+  <Icon
+    name="tabler:search"
+    class="pointer-events-none absolute top-1/2 left-5 size-6 -translate-y-1/2 stroke-gray-900 dark:stroke-gray-100"
+  />
+  <input
+    id="search-input"
+    name="search"
+    type="text"
+    class="peer transiton-colors h-14 w-full rounded-full border-[0.5px] pr-14 pl-16 text-sm focus:ring-1 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-800"
+    spellcheck="false"
+    placeholder="Search formulas..."
+  />
+  <button
+    id="clear-search"
+    aria-label="Clear search"
+    class="group strok-gray-400 dark:hover-stroke-gray-300 absolute top-1/2 right-4 flex size-8 -translate-y-1/2 items-center justify-center rounded-full transition-colors hover:bg-neutral-200 hover:stroke-gray-600 dark:hover:bg-neutral-800"
+  >
+    <Icon name="tabler:x" class="size-5" />
+  </button>
+</div>
+
+<script is:inline>
+  const input = document.getElementById('search-input')
+  const clearButton = document.getElementById('clear-search')
+
+  function toggleClearButton() {
+    if (input.value.length > 0) {
+      clearButton.classList.remove('hidden')
+    } else {
+      clearButton.classList.add('hidden')
+    }
+  }
+
+  toggleClearButton()
+
+  input.addEventListener('input', toggleClearButton)
+
+  clearButton.addEventListener('click', () => {
+    input.value = ''
+    toggleClearButton()
+    input.focus()
+  })
+</script>
