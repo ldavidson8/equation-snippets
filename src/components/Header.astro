@@ -1,19 +1,127 @@
 ---
 import { Icon } from 'astro-icon/components'
 import ThemeToggle from './ThemeToggle.astro'
+import HeaderSearchDialog from './HeaderSearchDialog.astro'
 ---
 
 <header class="absolute top-4 right-0 left-0 mx-auto w-[calc(100%-(20px*2))] md:top-5">
-  <a href="/" class="mt-3 ml-3 block w-10">
+  <a href="/" class="mt-4 ml-3 block w-10">
     <Icon name="tabler:sum" class="size-8" />
     <span class="sr-only">Home</span>
   </a>
-
-  <!-- <nav
-    class="bg-background fixed top-10 right-0 left-0 z-[999] mx-auto h-12 w-fit rounded-md border"
-  
-  </nav> -->
-  <div class="fixed top-10 right-10 flex items-center">
+  <div class="fixed top-10 right-10 flex items-center gap-5">
+    <button data-header-search-button class="flex items-center gap-2 rounded-full text-sm">
+      <Icon name="tabler:search" class="size-5" />
+      <span>Search</span>
+    </button>
     <ThemeToggle />
   </div>
 </header>
+
+<HeaderSearchDialog />
+
+<script is:inline>
+  function initHeaderSearch() {
+    const overlay = document.getElementById('header-search-overlay')
+
+    if (!overlay || overlay.dataset.searchInitialized === 'true') {
+      return
+    }
+
+    const searchButtons = Array.from(document.querySelectorAll('[data-header-search-button]'))
+    const panel = overlay.querySelector('[data-header-search-panel]')
+    const htmlElement = document.documentElement
+
+    let lastTrigger = null
+    let lastVariant = null
+
+    const setExpandedState = (isOpen) => {
+      const expanded = isOpen ? 'true' : 'false'
+      searchButtons.forEach((button) => {
+        button.setAttribute('aria-expanded', expanded)
+      })
+      overlay.dataset.open = expanded
+      overlay.setAttribute('aria-hidden', isOpen ? 'false' : 'true')
+    }
+
+    const focusSearchInput = () => {
+      window.requestAnimationFrame(() => {
+        const input = overlay.querySelector('[data-pagefind-ui] input[type="text"]')
+        if (input) {
+          input.focus()
+          input.select() // Selects any existing text for easy replacement
+        }
+      })
+    }
+
+    const openOverlay = (trigger, options = {}) => {
+      lastTrigger = trigger ?? document.activeElement
+      const variant = options.variant ?? null
+      lastVariant = typeof variant === 'string' ? variant : null
+
+      // Make the overlay visible
+      overlay.classList.remove('hidden')
+      overlay.classList.add('flex')
+
+      // Lock body scroll
+      htmlElement.classList.add('has-header-search-open')
+
+      setExpandedState(true)
+      focusSearchInput()
+    }
+
+    const closeOverlay = () => {
+      if (overlay.dataset.open !== 'true') return
+
+      // Hide the overlay
+      overlay.classList.add('hidden')
+      overlay.classList.remove('flex')
+
+      // Unlock body scroll
+      htmlElement.classList.remove('has-header-search-open')
+
+      setExpandedState(false)
+
+      // Return focus to the element that opened the search
+      if (lastTrigger instanceof HTMLElement) {
+        if (lastVariant === 'mobile' && typeof lastTrigger.blur === 'function') {
+          // On mobile, blurring might be better than re-focusing
+          lastTrigger.blur()
+        } else {
+          lastTrigger.focus()
+        }
+      }
+
+      // Reset state
+      lastTrigger = null
+      lastVariant = null
+    }
+
+    searchButtons.forEach((button) => {
+      button.addEventListener('click', (event) => {
+        event.preventDefault()
+        openOverlay(button, { variant: button.dataset.variant })
+      })
+    })
+
+    overlay.addEventListener('click', (event) => {
+      if (
+        event.target.matches('[data-header-search-dismiss]') ||
+        event.target.closest('[data-header-search-close]')
+      ) {
+        closeOverlay()
+      }
+    })
+
+    // Closing with the Escape key
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && overlay.dataset.open === 'true') {
+        closeOverlay()
+      }
+    })
+  }
+
+  initHeaderSearch()
+
+  document.addEventListener('astro:page-load', initHeaderSearch)
+</script>

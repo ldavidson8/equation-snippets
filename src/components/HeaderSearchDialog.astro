@@ -1,0 +1,85 @@
+---
+import Search from 'astro-pagefind/components/Search'
+---
+
+<div
+  id="header-search-overlay"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="header-search-title"
+  aria-hidden="true"
+  data-open="false"
+  class="fixed inset-0 z-50 hidden items-start justify-center px-4 pt-24 pb-12 md:pt-28"
+>
+  <div
+    class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity dark:bg-black/70"
+    data-header-search-dismiss
+  >
+  </div>
+  <div
+    class="relative z-10 w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-black/10 dark:bg-neutral-900 dark:ring-white/10"
+  >
+    <div class="px-4 py-5 md:px-6 md:py-6">
+      <Search id="header-search" className="pagefind-ui" uiOptions={{ showImages: false }} />
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  html.dark .pagefind-ui {
+    --pagefind-ui-text: #fff;
+    --pagefind-ui-primary: #fff;
+    --pagefind-ui-background: transparent;
+    --pagefind-ui-border: rgb(143 143 143 / var(--tw-text-opacity, 1));
+  }
+
+  .pagefind-ui {
+    --pagefind-ui-scale: 0.65;
+    --pagefind-ui-text: black;
+    --pagefind-ui-border: rgb(237 237 237 / var(--tw-bg-opacity, 1));
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 0.5rem;
+    --pagefind-ui-font: 'Inter Variable', sans-serif;
+
+    .pagefind-ui__search-input {
+      font-size: 0.875rem !important;
+      line-height: 1.25rem !important;
+    }
+
+    .pagefind-ui__search-input {
+      font-weight: 400 !important;
+    }
+
+    .pagefind-ui__search-input {
+      &::-moz-placeholder {
+        font-size: 0.875rem !important;
+        line-height: 1.25rem !important;
+      }
+
+      &::placeholder {
+        font-size: 0.875rem !important;
+        line-height: 1.25rem !important;
+      }
+    }
+
+    .pagefind-ui__search-clear,
+    .pagefind-ui__message {
+      font-size: 0.875rem !important;
+      line-height: 1.25rem !important;
+    }
+
+    .pagefind-ui__result-title {
+      font-size: 1.125rem !important;
+      line-height: 1.75rem !important;
+    }
+
+    .pagefind-ui__result-title {
+      line-height: 1.375 !important;
+    }
+
+    .pagefind-ui__result-excerpt {
+      font-size: 0.875rem !important;
+      line-height: 1.25rem !important;
+    }
+  }
+</style>

@@ -7,7 +7,7 @@ latex: '\\mathbf{a} \\cdot \\mathbf{b} = \\sum_{i=1}^{n} a_i b_i = a_1 b_1 + a_2
 relatedFormulas: ['vector-magnitude', 'vector-normalization']
 ---
 
-import MathDisplay from '@/components/MathDisplay.astro'
+import KatexFormula from '@/components/KatexFormula.astro'
 
 ## Definition
 
@@ -17,14 +17,12 @@ The dot product, or scalar product, is an algebraic operation that takes two equ
 
 For two vectors **a** = [a₁, a₂, ..., aₙ] and **b** = [b₁, b₂, ..., bₙ]:
 
-<MathDisplay latex={frontmatter.latex} />
+<KatexFormula latex={frontmatter.latex} />
 
 Geometrically, it can also be calculated as:
 
-<MathDisplay
-  latex={
-    '\\mathbf{a} \\cdot \\mathbf{b} = \\|\\mathbf{a}\\| \\|\\mathbf{b}\\| \\cos \\theta'
-  }
+<KatexFormula
+  latex={'\\mathbf{a} \\cdot \\mathbf{b} = \\|\\mathbf{a}\\| \\|\\mathbf{b}\\| \\cos \\theta'}
 />
 
 where θ is the angle between the vectors **a** and **b**.

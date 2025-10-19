@@ -13,36 +13,91 @@ import { Icon } from 'astro-icon/components'
     type="text"
     class="peer transiton-colors h-14 w-full rounded-full border-[0.5px] pr-14 pl-16 text-sm focus:ring-1 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-800"
     spellcheck="false"
-    placeholder="Search formulas..."
+    placeholder="Search equations"
   />
   <button
     id="clear-search"
     aria-label="Clear search"
-    class="group strok-gray-400 dark:hover-stroke-gray-300 absolute top-1/2 right-4 flex size-8 -translate-y-1/2 items-center justify-center rounded-full transition-colors hover:bg-neutral-200 hover:stroke-gray-600 dark:hover:bg-neutral-800"
+    class="group absolute top-1/2 right-4 hidden size-8 -translate-y-1/2 items-center justify-center rounded-full stroke-gray-400 transition-colors hover:bg-neutral-200 hover:stroke-gray-600 dark:hover:bg-neutral-800 dark:hover:stroke-gray-300"
   >
     <Icon name="tabler:x" class="size-5" />
   </button>
 </div>
 
-<script is:inline>
-  const input = document.getElementById('search-input')
-  const clearButton = document.getElementById('clear-search')
+<script>
+  import { distance } from 'fastest-levenshtein'
 
-  function toggleClearButton() {
-    if (input.value.length > 0) {
-      clearButton.classList.remove('hidden')
-    } else {
-      clearButton.classList.add('hidden')
+  function initSearchInput() {
+    const input = document.getElementById('search-input') as HTMLInputElement
+    const clearButton = document.getElementById('clear-search') as HTMLButtonElement
+
+    if (!input || !clearButton) return
+
+    const cards = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>('[data-id="formula-card"]'),
+    )
+
+    function toggleClearButton() {
+      if (input.value.length > 0) {
+        clearButton.classList.remove('hidden')
+        clearButton.classList.add('flex')
+      } else {
+        clearButton.classList.add('hidden')
+        clearButton.classList.remove('flex')
+      }
     }
-  }
 
-  toggleClearButton()
+    function filterCards() {
+      const q = input.value.trim().toLowerCase()
+      if (!q) {
+        cards.forEach((c) => c.classList.remove('hidden'))
+        return
+      }
 
-  input.addEventListener('input', toggleClearButton)
+      const maxEditDistance = Math.max(2, Math.floor(q.length / 3))
 
-  clearButton.addEventListener('click', () => {
-    input.value = ''
+      cards.forEach((card) => {
+        const title = (card.dataset.title || '').toLowerCase()
+        const desc = (card.dataset.description || '').toLowerCase()
+        const tags = (card.dataset.tags || '').toLowerCase().split(/\s+/)
+        const matches =
+          title.includes(q) ||
+          desc.includes(q) ||
+          tags.some((t) => t.includes(q)) ||
+          distance(q, title) <= maxEditDistance ||
+          distance(q, desc) <= maxEditDistance ||
+          tags.some((t) => distance(q, t) <= maxEditDistance)
+
+        if (matches) {
+          card.classList.remove('hidden')
+        } else {
+          card.classList.add('hidden')
+        }
+      })
+    }
+
+    // Initial check
     toggleClearButton()
-    input.focus()
-  })
+
+    // Remove old listeners to prevent duplicates
+    input.removeEventListener('input', toggleClearButton)
+    input.removeEventListener('input', filterCards)
+
+    clearButton.onclick = null
+
+    // Add event listeners
+    input.addEventListener('input', () => {
+      toggleClearButton()
+      filterCards()
+    })
+    clearButton.addEventListener('click', () => {
+      input.value = ''
+      toggleClearButton()
+      filterCards()
+      input.focus()
+    })
+  }
+  initSearchInput()
+
+  document.addEventListener('astro:page-load', initSearchInput)
 </script>

@@ -1,0 +1,70 @@
+---
+import Footer from '@/components/Footer.astro'
+import Header from '@/components/Header.astro'
+import Head from '@/components/Head.astro'
+import 'katex/dist/katex.min.css'
+
+type Props = {
+  title: string
+  siteName?: string
+  description: string
+  cover: string
+  author?: string
+}
+
+const { title, siteName, description, cover, author } = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <Head
+      title={title}
+      siteName={siteName}
+      description={description}
+      cover={cover}
+      author={author}
+    />
+    <script is:inline>
+      function preloadTheme() {
+        const theme = (() => {
+          const userTheme = localStorage.theme
+
+          if (userTheme === 'light' || userTheme === 'dark') {
+            return userTheme
+          } else {
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+          }
+        })()
+
+        const element = document.documentElement
+
+        if (theme === 'dark') {
+          element.classList.add('dark')
+          element.setAttribute('data-theme', 'dark')
+        } else {
+          element.classList.remove('dark')
+          element.setAttribute('data-theme', 'light')
+        }
+
+        localStorage.theme = theme
+      }
+
+      preloadTheme()
+      document.addEventListener('astro:after-swap', preloadTheme)
+    </script>
+  </head>
+  <body>
+    <div>
+      <Header />
+      <main data-pagefind-body>
+        <div class="p-4 md:p-5">
+          <div class="rounded-md border md:rounded-lg">
+            <slot />
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>

@@ -17,7 +17,13 @@ const difficultyColors = {
 const difficulty = formula.data.difficulty
 ---
 
-<a href={`/formulas/${formula.slug}`}>
+<a
+  data-id="formula-card"
+  href={`/formulas/${formula.slug}`}
+  data-title={formula.data.title}
+  data-description={formula.data.description}
+  data-tags={formula.data.tags.join(' ')}
+>
   <div class="group flex flex-col">
     <div class="flex aspect-[16/9] items-center justify-center rounded-md bg-white dark:bg-black">
       <KatexFormula

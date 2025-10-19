@@ -8,7 +8,7 @@ difficulty: 'intermediate'
 relatedFormulas: ['dot-product', 'vector-normalization']
 ---
 
-import MathDisplay from '@/components/MathDisplay.astro'
+import KatexFormula from '@/components/KatexFormula.astro'
 
 ## Definition
 
@@ -18,11 +18,11 @@ The cross product is a binary operation on two vectors in three-dimensional spac
 
 For two vectors **a** = [a₁, a₂, a₃] and **b** = [b₁, b₂, b₃]:
 
-<MathDisplay latex={frontmatter.latex} />
+<KatexFormula latex={frontmatter.latex} />
 
 Geometrically, the magnitude of the cross product equals the area of the parallelogram formed by the two vectors:
 
-<MathDisplay
+<KatexFormula
   latex={
     '\\|\\mathbf{a} \\times \\mathbf{b}\\| = \\|\\mathbf{a}\\| \\|\\mathbf{b}\\| \\sin \\theta'
   }

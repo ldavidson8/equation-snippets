@@ -1,13 +1,14 @@
 ---
+import BaseLayout from '@/layouts/BaseLayout.astro'
 import Accordion from '@/components/controls/Accordion.astro'
 import FormulaCard from '@/components/FormulaCard.astro'
-import Layout from '@/layouts/Layout.astro'
 import { getCollection } from 'astro:content'
 import Search from '@/components/Search.astro'
+import ColorBars from '@/components/ColorBars.astro'
 const formulas = await getCollection('formulas')
 ---
 
-<Layout
+<BaseLayout
   title="Graphics Formulas"
   description="A collection of useful formulas for graphics programming."
   cover=""
@@ -16,74 +17,21 @@ const formulas = await getCollection('formulas')
     <div class="flex flex-col gap-6 border-b px-4 pt-36 pb-10 md:px-12">
       <div>
         <h1 class="text-3xl font-medium tracking-tight text-balance uppercase md:text-4xl">
-          Formulas
+          Equations
         </h1>
-        <div class="flex gap-1 pt-4" data-id="color-bars">
-          {
-            [...Array(30)].map((_, i) => (
-              <div
-                class="h-5 w-1"
-                style={{
-                  backgroundColor: `hsl(${(i * 360) / 30}, 70%, 60%)`,
-                }}
-              />
-            ))
-          }
-        </div>
+        <ColorBars />
       </div>
-      <Search />
+      <div class="mx-auto w-[600px]">
+        <Search />
+      </div>
     </div>
     <!-- <div class="flex w-80 justify-center">
       <Accordion title="Welcome to Equation Snippets">
         <div>Hello world</div>
       </Accordion>
     </div> -->
-    <section class="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 lg:grid-cols-3">
+    <section id="formula-cards" class="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 lg:grid-cols-3">
       {formulas.map((formula) => <FormulaCard formula={formula} />)}
     </section>
   </div>
-</Layout>
-
-<script>
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
-
-  function animateBars() {
-    if (prefersReducedMotion.matches) return
-
-    const container = document.querySelector('[data-id="color-bars"]')
-    const colorBars = container?.querySelectorAll('div')
-
-    if (!container) return
-    if (!colorBars) return
-
-    container.classList.add('animated')
-
-    colorBars.forEach((bar, index) => {
-      bar.style.transitionDelay = `${index * 0.02}s`
-
-      requestAnimationFrame(() => {
-        bar.style.opacity = '1'
-        bar.style.transform = 'scaleY(1)'
-      })
-    })
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', animateBars)
-  } else {
-    animateBars()
-  }
-  document.addEventListener('astro:page-load', animateBars)
-</script>
-
-<style>
-  [data-id='color-bars'] > div {
-    opacity: 0;
-    transform: scaleY(0.1);
-    transform-origin: bottom;
-  }
-
-  [data-id='color-bars'].animated > div {
-    transition: all 0.2s ease-out;
-  }
-</style>
+</BaseLayout>

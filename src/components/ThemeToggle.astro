@@ -1,90 +1,39 @@
-<div class="flex h-full items-center gap-1.5">
-  <button
-    id="system-theme"
-    class="size-5 rounded-full border bg-gradient-to-r from-white from-50% to-black to-50% p-1.5 sm:p-0"
-  >
-    <span class="sr-only">System</span></button
-  >
-  <button id="light-theme" class="size-5 rounded-full border bg-white">
-    <span class="sr-only">Light</span>
-  </button>
-  <button id="dark-theme" class="size-5 rounded-full border bg-black">
-    <span class="sr-only">Dark</span>
-  </button>
-</div>
+---
+import { Icon } from 'astro-icon/components'
+---
+
+<button
+  id="header-theme-button"
+  aria-label="Toggle light and dark theme"
+  class="flex transition-colors hover:text-gray-900 dark:text-gray-200 dark:hover:text-gray-100"
+>
+  <Icon name="tabler:sun" class="block size-5 dark:hidden" />
+  <Icon name="tabler:moon" class="hidden size-5 dark:block" />
+</button>
 
 <script>
-  function getSystemTheme(): 'dark' | 'light' {
-    return window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? 'dark'
-      : 'light'
-  }
+  function changeTheme() {
+    const element = document.documentElement
+    const isDark = element.classList.contains('dark')
+    const nextTheme = isDark ? 'light' : 'dark'
 
-  function applyTheme(theme: 'dark' | 'light' | 'system') {
-    const effectiveTheme = theme === 'system' ? getSystemTheme() : theme
-    document.documentElement.setAttribute('data-theme', effectiveTheme)
-
-    if (effectiveTheme === 'dark') {
-      document.documentElement.classList.add('dark')
+    if (nextTheme === 'dark') {
+      element.classList.add('dark')
+      element.setAttribute('data-theme', 'dark')
     } else {
-      document.documentElement.classList.remove('dark')
+      element.classList.remove('dark')
+      element.setAttribute('data-theme', 'light')
     }
+
+    localStorage.theme = nextTheme
   }
 
-  // Button event listeners
-  document.getElementById('system-theme')?.addEventListener('click', () => {
-    localStorage.setItem('theme', 'system')
-    applyTheme('system')
-  })
-
-  document.getElementById('light-theme')?.addEventListener('click', () => {
-    localStorage.setItem('theme', 'light')
-    applyTheme('light')
-  })
-
-  document.getElementById('dark-theme')?.addEventListener('click', () => {
-    localStorage.setItem('theme', 'dark')
-    applyTheme('dark')
-  })
-
-  // Listen for storage changes (from other tabs/windows)
-  window.addEventListener('storage', (e) => {
-    if (e.key === 'theme' && e.newValue) {
-      applyTheme(e.newValue as 'dark' | 'light' | 'system')
-    }
-  })
-
-  // Listen for system theme changes
-  window
-    .matchMedia('(prefers-color-scheme: dark)')
-    .addEventListener('change', () => {
-      const currentTheme = localStorage.getItem('theme')
-      if (!currentTheme || currentTheme === 'system') {
-        applyTheme('system')
-      }
-    })
-</script>
-
-<script is:inline>
-  function applyTheme() {
-    const theme = localStorage.getItem('theme') || 'system'
-    const effectiveTheme =
-      theme === 'system'
-        ? window.matchMedia('(prefers-color-scheme: dark)').matches
-          ? 'dark'
-          : 'light'
-        : theme
-
-    document.documentElement.setAttribute('data-theme', effectiveTheme)
-
-    if (effectiveTheme === 'dark') {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
+  function initTheme() {
+    const headerThemeButton = document.getElementById('header-theme-button')
+    headerThemeButton?.removeEventListener('click', changeTheme)
+    headerThemeButton?.addEventListener('click', changeTheme)
   }
 
-  // Apply on initial load
-  applyTheme()
-  document.addEventListener('astro:after-swap', applyTheme)
+  initTheme()
+  document.addEventListener('astro:after-swap', initTheme)
 </script>
