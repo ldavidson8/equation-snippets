@@ -24,8 +24,8 @@ const difficulty = formula.data.difficulty
   data-description={formula.data.description}
   data-tags={formula.data.tags.join(' ')}
 >
-  <div class="group flex flex-col">
-    <div class="flex aspect-[16/9] items-center justify-center rounded-md bg-white dark:bg-black">
+  <div class="group bg-primary flex flex-col rounded-md p-2">
+    <div class="flex aspect-video items-center justify-center rounded-md bg-white dark:bg-black">
       <KatexFormula
         latex={formula.data.latex}
         className="w-3/4 opacity-90 transition-opacity group-hover:opacity-100"

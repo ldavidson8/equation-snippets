@@ -13,37 +13,51 @@
   --font-sans: 'Inter Variable', sans-serif;
   --font-mono: var(--font-ibm-plex-mono), monospace;
 
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --background-color-primary: var(--bg-primary);
+  --background-color-secondary: var(--bg-secondary);
+  --background-color-tertiary: var(--bg-tertiary);
+  --background-color-dark: var(--bg-dark);
+  --background-color-darker: var(--bg-darker);
+  --text-color-primary: var(--fg-primary);
+  --text-color-secondary: var(--fg-secondary);
+  --text-color-tertiary: var(--fg-tertiary);
+  --border-color-primary: var(--border-primary);
+  --border-color-strong: var(--border-strong);
+  --border-color-stronger: var(--border-stronger);
+  --border-color-subtle: var(--border-subtle);
 }
 
 :root {
-  --background: oklch(0.9676 0.016 286.1);
-  --foreground: oklch(0.176 0.0123 285.06);
-  --border: oklch(0.7235 0.0071 286.22);
+  --bg-primary: oklch(1 0 0);
+  --bg-secondary: oklch(0.985 0.001 106.4);
+  --bg-tertiary: oklch(0.951 0.003 17.2);
+  --bg-dark: oklch(0.893 0.005 67.8);
+  --bg-darker: oklch(0.823 0.006 59.6);
+  --fg-primary: oklch(0.271 0.007 67.5);
+  --fg-secondary: oklch(0.455 0.005 56.3);
+  --fg-tertiary: oklch(0.633 0.008 61.4);
+  --border-primary: oklch(0 0 0 / 0.5);
+  --border-strong: oklch(0 0 0 / 0.7);
+  --border-stronger: oklch(0 0 0 / 0.9);
+  --border-subtle: oklch(0 0 0 / 0.2);
 }
 
 .dark {
-  --background: oklch(0.176 0.0123 285.06);
-  --foreground: oklch(1 0 0);
-  --border: oklch(0.4686 0.0048 286.21);
+  --bg-primary: oklch(0.239 0 0);
+  --bg-secondary: oklch(0.205 0 0);
+  --bg-tertiary: oklch(0.182 0 0);
+  --bg-dark: oklch(0.182 0 0);
+  --bg-darker: oklch(0 0 0);
+  --fg-primary: oklch(0.919 0 0);
+  --fg-secondary: oklch(0.827 0 0);
+  --fg-tertiary: oklch(0.732 0 0);
+  --border-primary: oklch(1 0 0 / 0.4);
+  --border-strong: oklch(1 0 0 / 0.6);
+  --border-stronger: oklch(1 0 0 / 0.8);
+  --border-subtle: oklch(1 0 0 / 0.2);
 }
 
 @layer base {
-  [data-theme='dark'] {
-    color-scheme: dark;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  button,
-  [role='button'] {
-    cursor: pointer;
-  }
-
-  body {
-    @apply text-foreground bg-background h-full w-full;
-  }
-
   * {
     border-color: var(--border);
     outline-color: var(--ring) 50%;
@@ -59,7 +73,17 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  main {
-    display: block;
+  html {
+    @apply bg-secondary flex min-h-screen flex-col font-sans;
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  button,
+  [role='button'] {
+    cursor: pointer;
   }
 }

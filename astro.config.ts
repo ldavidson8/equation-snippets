@@ -7,6 +7,7 @@ import devtoolsJson from 'vite-plugin-devtools-json'
 import aiRobotsTxt from 'astro-ai-robots-txt'
 import robotsTxt from 'astro-robots-txt'
 
+import AstroPWA from '@vite-pwa/astro'
 import sitemap from '@astrojs/sitemap'
 import partytown from '@astrojs/partytown'
 import pagefind from 'astro-pagefind'
@@ -27,7 +28,41 @@ export default defineConfig({
     aiRobotsTxt(),
     sitemap(),
     pagefind(),
-    // partytown(),
+    partytown(),
+    AstroPWA({
+      mode: 'development',
+      registerType: 'autoUpdate',
+      manifest: {
+        name: 'Equation Snippets',
+        short_name: 'Equation Snippets',
+        description: 'A collection of useful equations for various fields of study.',
+        theme_color: '#1a202c',
+        icons: [
+          { src: '/favicon.ico', type: 'image/x-icon', sizes: '16x16 32x32' },
+          { src: '/icon-192.png', type: 'image/png', sizes: '192x192' },
+          { src: '/icon-512.png', type: 'image/png', sizes: '512x512' },
+          {
+            src: '/icon-192-maskable.png',
+            type: 'image/png',
+            sizes: '192x192',
+            purpose: 'maskable',
+          },
+          {
+            src: '/icon-512-maskable.png',
+            type: 'image/png',
+            sizes: '512x512',
+            purpose: 'maskable',
+          },
+        ],
+      },
+      workbox: {
+        navigateFallback: '/404',
+      },
+      devOptions: {
+        enabled: true,
+        navigateFallbackAllowlist: [/^\/$/],
+      },
+    }),
   ],
   experimental: {
     fonts: [

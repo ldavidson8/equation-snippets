@@ -2,20 +2,40 @@
 import { Icon } from 'astro-icon/components'
 import ThemeToggle from './ThemeToggle.astro'
 import HeaderSearchDialog from './HeaderSearchDialog.astro'
+import Popover from './controls/Popover.astro'
 ---
 
-<header class="absolute top-4 right-0 left-0 mx-auto w-[calc(100%-(20px*2))] md:top-5">
-  <a href="/" class="mt-4 ml-3 block w-10">
-    <Icon name="tabler:sum" class="size-8" />
-    <span class="sr-only">Home</span>
-  </a>
-  <div class="fixed top-10 right-10 flex items-center gap-5">
-    <button data-header-search-button class="flex items-center gap-2 rounded-full text-sm">
-      <Icon name="tabler:search" class="size-5" />
-      <span>Search</span>
-    </button>
-    <ThemeToggle />
-  </div>
+<header
+  class="fixed z-50 mt-2 hidden items-center lg:flex lg:pl-12 2xl:mx-auto 2xl:w-full 2xl:justify-center 2xl:pl-0"
+>
+  <nav
+    aria-label="Main navigation"
+    class="flex transform py-2 transition-all duration-100 lg:max-w-[1536px]"
+  >
+    <ul class="flex items-center justify-end gap-2">
+      <li>
+        <a href="/" class="flex items-center gap-2 text-lg font-semibold">
+          <Icon name="tabler:sum" class="size-6" />
+          <span class="sr-only">Home</span>
+        </a>
+      </li>
+      <li>
+        <button
+          data-header-search-button
+          data-variant="desktop"
+          class="ml-4 flex items-center gap-2"
+          aria-label="Open search dialog"
+          aria-expanded="false"
+        >
+          <Icon name="tabler:search" class="size-5" />
+          <span class="hidden text-sm md:inline">Search</span>
+        </button>
+      </li>
+      <li>
+        <ThemeToggle />
+      </li>
+    </ul>
+  </nav>
 </header>
 
 <HeaderSearchDialog />

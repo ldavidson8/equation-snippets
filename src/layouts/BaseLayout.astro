@@ -3,6 +3,7 @@ import Footer from '@/components/Footer.astro'
 import Header from '@/components/Header.astro'
 import Head from '@/components/Head.astro'
 import 'katex/dist/katex.min.css'
+import { pwaInfo } from 'virtual:pwa-info'
 
 type Props = {
   title: string
@@ -53,15 +54,19 @@ const { title, siteName, description, cover, author } = Astro.props
       preloadTheme()
       document.addEventListener('astro:after-swap', preloadTheme)
     </script>
+    {pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} />}
+    <script src="/src/pwa.ts"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@oddbird/popover-polyfill@latest"
+      crossorigin="anonymous"
+      defer></script>
   </head>
   <body>
     <div>
       <Header />
       <main>
         <div class="p-4 md:p-5">
-          <div class="rounded-md border md:rounded-lg">
-            <slot />
-          </div>
+          <slot />
         </div>
       </main>
       <Footer />

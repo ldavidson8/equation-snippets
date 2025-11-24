@@ -25,8 +25,6 @@ import { Icon } from 'astro-icon/components'
 </div>
 
 <script>
-  import { distance } from 'fastest-levenshtein'
-
   function initSearchInput() {
     const input = document.getElementById('search-input') as HTMLInputElement
     const clearButton = document.getElementById('clear-search') as HTMLButtonElement
@@ -54,19 +52,11 @@ import { Icon } from 'astro-icon/components'
         return
       }
 
-      const maxEditDistance = Math.max(2, Math.floor(q.length / 3))
-
       cards.forEach((card) => {
         const title = (card.dataset.title || '').toLowerCase()
         const desc = (card.dataset.description || '').toLowerCase()
         const tags = (card.dataset.tags || '').toLowerCase().split(/\s+/)
-        const matches =
-          title.includes(q) ||
-          desc.includes(q) ||
-          tags.some((t) => t.includes(q)) ||
-          distance(q, title) <= maxEditDistance ||
-          distance(q, desc) <= maxEditDistance ||
-          tags.some((t) => distance(q, t) <= maxEditDistance)
+        const matches = title.includes(q) || desc.includes(q) || tags.some((t) => t.includes(q))
 
         if (matches) {
           card.classList.remove('hidden')
