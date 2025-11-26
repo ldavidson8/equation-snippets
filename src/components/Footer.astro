@@ -2,14 +2,51 @@
 import { Icon } from 'astro-icon/components'
 ---
 
-<footer class="bg-dark px-8 pt-6 pb-4">
-  <div class="flex w-full items-center justify-between gap-2 text-sm">
-    <a href="https://github.com/ldavidson8/equation-snippets">
-      <span>Submit new equations</span>
-    </a>
-    <a href="https://github.com/ldavidson8/equation-snippets" class="hover:underline">
-      <Icon name="tabler:brand-github" class="size-5" />
-      <span class="sr-only">GitHub Link</span>
-    </a>
-  </div>
-</footer>
+<div class="dark:bg-dark flex w-full flex-col bg-stone-900 p-4 md:py-10 lg:p-20">
+  <footer
+    class="mx-auto flex w-full max-w-[640px] flex-col justify-between gap-8 py-16 md:mt-12 md:flex-row md:gap-0 md:py-20 lg:py-12"
+  >
+    <div class="inline-flex flex-col items-start justify-start gap-2 md:gap-4">
+      <a href="/" class="rounded-lg p-1 transition-colors hover:bg-stone-800">
+        <Icon name="tabler:sum" class="size-5 text-white" />
+        <span class="sr-only">Home</span>
+      </a>
+      <div class="flex flex-col items-start justify-start gap-4 md:gap-1">
+        <p class="pl-2 text-xs tracking-wide text-zinc-400">Equation Snippets</p>
+        <div class="inline-flex items-start justify-start gap-0 md:gap-1">
+          <p
+            class="px-2 py-1 text-xs font-light tracking-wide text-balance text-gray-200 transition-all hover:text-white"
+          >
+            Open source directory for math in AI, science, and engineering.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-col items-start justify-start gap-1 md:gap-0.5">
+      <a
+        href="https://github.com/ldavidson8/equation-snippets"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-1 rounded-md px-2 py-1 text-[13px] font-light tracking-wide text-gray-200 transition-all hover:bg-stone-800 hover:text-white"
+      >
+        Github <Icon name="tabler:external-link" class="size-3" />
+      </a>
+      <a
+        href="https://github.com/ldavidson8/equation-snippets/pulls"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-1 rounded-md px-2 py-1 text-[13px] font-light tracking-wide text-gray-200 transition-all hover:bg-stone-800 hover:text-white"
+      >
+        Contribute <Icon name="tabler:external-link" class="size-3" />
+      </a>
+      <a
+        href="https://github.com/ldavidson8/equation-snippets/issues"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-1 rounded-md px-2 py-1 text-[13px] font-light tracking-wide text-gray-200 transition-all hover:bg-stone-800 hover:text-white"
+      >
+        Submit Feedback <Icon name="tabler:external-link" class="size-3" />
+      </a>
+    </div>
+  </footer>
+</div>

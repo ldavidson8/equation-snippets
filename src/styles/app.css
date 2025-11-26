@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+@custom-variant dark (&:where(.dark, .dark *));
 
 @font-face {
   font-family: 'Inter Variable';
@@ -25,6 +25,10 @@
   --border-color-strong: var(--border-strong);
   --border-color-stronger: var(--border-stronger);
   --border-color-subtle: var(--border-subtle);
+  --color-ring: var(--ring-primary);
+  --color-ring-strong: var(--ring-strong);
+  --color-ring-stronger: var(--ring-stronger);
+  --color-ring-subtle: var(--ring-subtle);
 }
 
 :root {
@@ -33,13 +37,21 @@
   --bg-tertiary: oklch(0.951 0.003 17.2);
   --bg-dark: oklch(0.893 0.005 67.8);
   --bg-darker: oklch(0.823 0.006 59.6);
+  --bg-accent: oklch(0.696 0.204 43.5);
   --fg-primary: oklch(0.271 0.007 67.5);
   --fg-secondary: oklch(0.455 0.005 56.3);
   --fg-tertiary: oklch(0.633 0.008 61.4);
+  --fg-accent: oklch(0.696 0.204 43.5);
   --border-primary: oklch(0 0 0 / 0.5);
   --border-strong: oklch(0 0 0 / 0.7);
   --border-stronger: oklch(0 0 0 / 0.9);
   --border-subtle: oklch(0 0 0 / 0.2);
+  --border-accent: oklch(0.567 0.165 42.7);
+  --ring-primary: oklch(0 0 0 / 0.5);
+  --ring-strong: oklch(0 0 0 / 0.7);
+  --ring-stronger: oklch(0 0 0 / 0.9);
+  --ring-subtle: oklch(0 0 0 / 0.2);
+  --ring-accent: oklch(0.567 0.165 42.7);
 }
 
 .dark {
@@ -48,13 +60,21 @@
   --bg-tertiary: oklch(0.182 0 0);
   --bg-dark: oklch(0.182 0 0);
   --bg-darker: oklch(0 0 0);
+  --bg-accent: oklch(0.696 0.204 43.5);
   --fg-primary: oklch(0.919 0 0);
   --fg-secondary: oklch(0.827 0 0);
-  --fg-tertiary: oklch(0.732 0 0);
+  --fg-tertiary: oklch(0.556 0 0);
+  --fg-accent: oklch(0.696 0.204 43.5);
   --border-primary: oklch(1 0 0 / 0.4);
   --border-strong: oklch(1 0 0 / 0.6);
   --border-stronger: oklch(1 0 0 / 0.8);
   --border-subtle: oklch(1 0 0 / 0.2);
+  --border-accent: oklch(0.567 0.165 42.7);
+  --ring-primary: oklch(1 0 0 / 0.4);
+  --ring-strong: oklch(1 0 0 / 0.6);
+  --ring-stronger: oklch(1 0 0 / 0.8);
+  --ring-subtle: oklch(1 0 0 / 0.1);
+  --ring-accent: oklch(0.567 0.165 42.7);
 }
 
 @layer base {
@@ -73,11 +93,7 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  html {
-    @apply bg-secondary flex min-h-screen flex-col font-sans;
-  }
-
-  [data-theme='dark'] {
+  html .dark {
     color-scheme: dark;
     -webkit-font-smoothing: antialiased;
   }
@@ -85,5 +101,9 @@
   button,
   [role='button'] {
     cursor: pointer;
+  }
+
+  [popover] {
+    color: inherit;
   }
 }

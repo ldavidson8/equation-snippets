@@ -11,8 +11,8 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "12.6.10",
-    "@astrojs/mdx": "4.3.10",
+    "@astrojs/cloudflare": "12.6.11",
+    "@astrojs/mdx": "4.3.12",
     "@astrojs/partytown": "^2.1.4",
     "@astrojs/sitemap": "3.6.0",
     "@floating-ui/dom": "^1.7.4",
@@ -20,7 +20,7 @@
     "@oddbird/popover-polyfill": "^0.6.1",
     "@playform/inline": "^0.1.2",
     "@tailwindcss/vite": "^4.1.17",
-    "astro": "5.15.6",
+    "astro": "5.16.0",
     "astro-ai-robots-txt": "^0.1.2",
     "astro-icon": "^1.1.5",
     "astro-pagefind": "^1.8.5",

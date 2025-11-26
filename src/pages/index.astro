@@ -11,20 +11,18 @@ const formulas = await getCollection('formulas')
   description="A collection of useful formulas for graphics programming."
   cover=""
 >
-  <div>
-    <div class="flex flex-col gap-6 px-4 pt-36 pb-10 md:px-12">
-      <div>
-        <h1 class="text-3xl font-medium tracking-tight text-balance uppercase md:text-4xl">
-          Equations
-        </h1>
-      </div>
-      <div class="mx-auto w-[600px]">
-        <Search />
-      </div>
+  <div class="flex flex-col gap-6 px-4 pt-36 pb-10 md:px-12">
+    <div>
+      <h1 class="text-3xl font-medium tracking-tight text-balance uppercase md:text-4xl">
+        Equations
+      </h1>
     </div>
-
-    <section id="formula-cards" class="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 lg:grid-cols-3">
-      {formulas.map((formula) => <FormulaCard formula={formula} />)}
-    </section>
+    <div class="mx-auto">
+      <Search />
+    </div>
   </div>
+
+  <section id="formula-cards" class="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 lg:grid-cols-3">
+    {formulas.map((formula) => <FormulaCard formula={formula} />)}
+  </section>
 </BaseLayout>

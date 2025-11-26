@@ -1,0 +1,39 @@
+---
+import { Icon } from 'astro-icon/components'
+---
+
+<nav class="fixed z-50 flex w-full transform transition-all duration-300 ease-in-out lg:hidden">
+  <div
+    class="mx-2 mt-2 flex w-full flex-col rounded-3xl px-4 py-3 transition-all duration-300 ease-out md:px-10"
+  >
+    <div class="flex items-center justify-between gap-4">
+      <a
+        href="/"
+        class="flex items-center rounded-full px-3 py-2 ring-1 ring-transparent transition-all duration-150 hover:bg-gray-100 active:ring-gray-300 dark:hover:bg-neutral-800 dark:active:bg-neutral-950"
+      >
+        <Icon name="tabler:sum" class="size-5" />
+        <span class="sr-only">Home</span>
+      </a>
+      <button>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="text-secondary size-5 transition-all duration-300 ease-in-out"
+        >
+          <line class="transiton-all duration-300 ease-in-out" x1="4" x2="20" y1="6" y2="6"></line>
+          <line class="transiton-all duration-300 ease-in-out" x1="4" x2="20" y1="12" y2="12"
+          ></line>
+          <line class="transiton-all duration-300 ease-in-out" x1="4" x2="20" y1="18" y2="18"
+          ></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>

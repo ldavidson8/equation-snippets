@@ -1,0 +1,95 @@
+---
+import { Icon } from 'astro-icon/components'
+
+export interface Props {
+  id: string
+  triggerId: string
+  class?: string
+  popoverClass?: string
+  triggerClass?: string
+  chevron?: boolean
+}
+const {
+  id,
+  triggerId,
+  class: className = '',
+  popoverClass: popoverClassName = '',
+  triggerClass: triggerClassName = '',
+  chevron = true,
+} = Astro.props
+---
+
+<div id={id} class:list={['relative flex rounded-full', className]}>
+  <button
+    id={triggerId}
+    type="button"
+    aria-expanded="false"
+    aria-controls={`${id}-popover`}
+    popovertarget={`${id}-popover`}
+    class:list={['group h-full w-full px-3 py-2', triggerClassName]}
+  >
+    <slot name="trigger" />
+    {
+      chevron && (
+        <Icon
+          name="tabler:chevron-down"
+          class:list={[
+            'size-3 transition-transform duration-150',
+            'group-aria-expanded:rotate-180',
+          ]}
+        />
+      )
+    }
+  </button>
+
+  <div
+    id={`${id}-popover`}
+    popover
+    aria-hidden="true"
+    class="bg-secondary absolute z-50 m-0 rounded-full p-1 ring-1 ring-gray-300 backdrop-blur-md dark:ring-neutral-600"
+  >
+    <div class:list={['flex w-auto gap-px rounded-full', popoverClassName]}>
+      <slot />
+    </div>
+  </div>
+</div>
+
+<script>
+  import { computePosition, offset, flip, shift, autoUpdate } from '@floating-ui/dom'
+
+  const triggers = document.querySelectorAll('[popovertarget]')
+
+  triggers.forEach((trigger) => {
+    const popoverId = trigger.getAttribute('popovertarget')
+    if (!popoverId) return
+    const popover = document.getElementById(popoverId)
+    if (!popover) return
+
+    let cleanup: (() => void) | null = null
+
+    const updatePosition = () => {
+      computePosition(trigger, popover, {
+        strategy: 'absolute',
+        placement: 'bottom-start',
+        middleware: [offset(6), flip(), shift({ padding: 5 })],
+      }).then(({ x, y }) => {
+        Object.assign(popover.style, {
+          left: `${x}px`,
+          top: `${y}px`,
+        })
+      })
+    }
+
+    popover.addEventListener('toggle', (event) => {
+      const isOpen = event.newState === 'open'
+      trigger.setAttribute('aria-expanded', isOpen.toString())
+
+      if (isOpen) {
+        cleanup = autoUpdate(trigger, popover, updatePosition)
+      } else if (cleanup) {
+        cleanup()
+        cleanup = null
+      }
+    })
+  })
+</script>

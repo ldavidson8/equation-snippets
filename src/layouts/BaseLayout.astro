@@ -4,6 +4,7 @@ import Header from '@/components/Header.astro'
 import Head from '@/components/Head.astro'
 import 'katex/dist/katex.min.css'
 import { pwaInfo } from 'virtual:pwa-info'
+import '@oddbird/popover-polyfill'
 
 type Props = {
   title: string
@@ -17,7 +18,7 @@ const { title, siteName, description, cover, author } = Astro.props
 ---
 
 <!doctype html>
-<html lang="en">
+<html class="bg-secondary text-primary flex min-h-screen flex-col font-sans" lang="en">
   <head>
     <Head
       title={title}
@@ -27,49 +28,38 @@ const { title, siteName, description, cover, author } = Astro.props
       author={author}
     />
     <script is:inline>
-      function preloadTheme() {
-        const theme = (() => {
-          const userTheme = localStorage.theme
+      ;(function () {
+        const root = document.documentElement
 
-          if (userTheme === 'light' || userTheme === 'dark') {
-            return userTheme
+        function applyTheme() {
+          const theme = localStorage.getItem('theme') || 'system'
+          const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isDark = theme === 'dark' || (theme === 'system' && systemDark)
+
+          if (isDark) {
+            root.classList.add('dark')
           } else {
-            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+            root.classList.remove('dark')
           }
-        })()
-
-        const element = document.documentElement
-
-        if (theme === 'dark') {
-          element.classList.add('dark')
-          element.setAttribute('data-theme', 'dark')
-        } else {
-          element.classList.remove('dark')
-          element.setAttribute('data-theme', 'light')
         }
 
-        localStorage.theme = theme
-      }
+        applyTheme()
 
-      preloadTheme()
-      document.addEventListener('astro:after-swap', preloadTheme)
+        document.addEventListener('theme-change', applyTheme)
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme)
+      })()
     </script>
     {pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} />}
     <script src="/src/pwa.ts"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/@oddbird/popover-polyfill@latest"
-      crossorigin="anonymous"
-      defer></script>
   </head>
   <body>
-    <div>
-      <Header />
-      <main>
-        <div class="p-4 md:p-5">
-          <slot />
-        </div>
-      </main>
-      <Footer />
-    </div>
+    <Header />
+    <main>
+      <div>
+        <slot />
+      </div>
+    </main>
+    <Footer />
   </body>
 </html>

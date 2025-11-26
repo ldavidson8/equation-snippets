@@ -1,39 +1,105 @@
 ---
 import { Icon } from 'astro-icon/components'
+import Popover from './controls/Popover.astro'
 ---
 
-<button
-  id="header-theme-button"
-  aria-label="Toggle light and dark theme"
-  class="flex transition-colors hover:text-gray-900 dark:text-gray-200 dark:hover:text-gray-100"
+<Popover
+  id="theme-toggle"
+  triggerId="theme-toggle-trigger"
+  triggerClass="rounded-full inline-flex items-center justify-center gap-1 transition-all duration-150 ease-out ring-1 ring-gray-100 dark:ring-neutral-800 bg-primary"
 >
-  <Icon name="tabler:sun" class="block size-5 dark:hidden" />
-  <Icon name="tabler:moon" class="hidden size-5 dark:block" />
-</button>
+  <div slot="trigger">
+    <span class="sr-only">Theme Selector</span>
 
-<script>
-  function changeTheme() {
-    const element = document.documentElement
-    const isDark = element.classList.contains('dark')
-    const nextTheme = isDark ? 'light' : 'dark'
+    <div id="trigger-icon-light" class="theme-icon hidden">
+      <Icon name="tabler:sun" class="size-4" />
+    </div>
 
-    if (nextTheme === 'dark') {
-      element.classList.add('dark')
-      element.setAttribute('data-theme', 'dark')
-    } else {
-      element.classList.remove('dark')
-      element.setAttribute('data-theme', 'light')
+    <div id="trigger-icon-dark" class="theme-icon hidden">
+      <Icon name="tabler:moon" class="size-4" />
+    </div>
+
+    <div id="trigger-icon-system" class="theme-icon hidden">
+      <Icon name="tabler:device-desktop" class="size-4" />
+    </div>
+  </div>
+
+  <button
+    class="theme-btn rounded-full p-2 transition-colors hover:bg-gray-100 dark:hover:bg-neutral-700"
+    data-theme="light"
+    aria-label="Light Theme"
+  >
+    <Icon name="tabler:sun" class="size-4" />
+  </button>
+  <button
+    class="theme-btn rounded-full p-2 transition-colors hover:bg-gray-100 dark:hover:bg-neutral-700"
+    data-theme="dark"
+    aria-label="Dark Theme"
+  >
+    <Icon name="tabler:moon" class="size-4" />
+  </button>
+  <button
+    class="theme-btn rounded-full p-2 transition-colors hover:bg-gray-100 dark:hover:bg-neutral-700"
+    data-theme="system"
+    aria-label="System Theme"
+  >
+    <Icon name="tabler:device-desktop" class="size-4" />
+  </button>
+</Popover>
+
+<style>
+  .theme-btn:not(.active) {
+    color: var(--text-color-tertiary);
+  }
+  .theme-btn.active {
+    background-color: var(--bg-primary);
+  }
+  html.dark .theme-btn.active {
+    background-color: var(--color-neutral-950);
+    color: var(--color-neutral-50);
+  }
+</style>
+
+<script is:inline>
+  function initThemeToggle() {
+    const buttons = document.querySelectorAll('.theme-btn')
+    const icons = document.querySelectorAll('.theme-icon')
+
+    const updateUI = (theme) => {
+      buttons.forEach((btn) => {
+        const isActive = btn.getAttribute('data-theme') === theme
+
+        if (isActive) {
+          btn.classList.add('active')
+        } else {
+          btn.classList.remove('active')
+        }
+      })
+
+      icons.forEach((icon) => icon.classList.add('hidden'))
+      const activeIcon = document.getElementById(`trigger-icon-${theme}`)
+      if (activeIcon) {
+        activeIcon.classList.remove('hidden')
+      }
     }
 
-    localStorage.theme = nextTheme
+    const currentTheme = localStorage.getItem('theme') || 'system'
+    updateUI(currentTheme)
+
+    buttons.forEach((btn) => {
+      btn.onclick = null
+      btn.onclick = () => {
+        const newTheme = btn.getAttribute('data-theme')
+        localStorage.setItem('theme', newTheme)
+
+        document.dispatchEvent(new CustomEvent('theme-change'))
+
+        updateUI(newTheme)
+      }
+    })
   }
 
-  function initTheme() {
-    const headerThemeButton = document.getElementById('header-theme-button')
-    headerThemeButton?.removeEventListener('click', changeTheme)
-    headerThemeButton?.addEventListener('click', changeTheme)
-  }
+  initThemeToggle()
 
-  initTheme()
-  document.addEventListener('astro:after-swap', initTheme)
+  document.addEventListener('astro:page-load', initThemeToggle)
 </script>
